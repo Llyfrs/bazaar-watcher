@@ -1,0 +1,13 @@
+{
+    "API_key":"",
+
+    "watch":
+    [
+        {   
+            "name":"Bottle of Beer",
+            "alert_bellow":5000,
+            "if_amount_bigger":0
+        }
+
+    ]
+}
