@@ -1,13 +1,57 @@
 {
-    "API_key":"",
+    "API_key":"HfPDNpVUBaYP9Zk0",
 
     "watch":
     [
         {   
-            "name":"Bottle of Beer",
-            "alert_bellow":5000,
+            "name":"Stingray Plushie",
+            "alert_bellow":1,
+            "if_amount_bigger":0
+        },
+        {   
+            "name":"Camel Plushie",
+            "alert_bellow":1,
+            "if_amount_bigger":0
+        },
+        {   
+            "name":"Red Fox Plushie",
+            "alert_bellow":1,
+            "if_amount_bigger":0
+        },
+        {   
+            "name":"Nessie Plushie",
+            "alert_bellow":1,
+            "if_amount_bigger":0
+        },
+        {   
+            "name":"Wolverine Plushie",
+            "alert_bellow":1,
+            "if_amount_bigger":0
+        },
+        {   
+            "name":"Chamois Plushie",
+            "alert_bellow":1,
+            "if_amount_bigger":0
+        },
+        {   
+            "name":"Monkey Plushie",
+            "alert_bellow":1,
+            "if_amount_bigger":0
+        },
+        {   
+            "name":"Panda Plushie",
+            "alert_bellow":1,
+            "if_amount_bigger":0
+        },
+        {   
+            "name":"Lion Plushie",
+            "alert_bellow":1,
+            "if_amount_bigger":0
+        },
+        {   
+            "name":"Jaguar Plushie",
+            "alert_bellow":1,
             "if_amount_bigger":0
         }
-
     ]
 }
