@@ -3,9 +3,7 @@ import schedule
 import datetime
 import time
 import json
-import sys
 import os
-from playsound import playsound
 from colorama import init, Fore, Back, Style
 
 init(autoreset=True)
