@@ -5,12 +5,13 @@ import time
 import json
 import os
 from colorama import init, Fore, Back, Style
-
 from sets import sets
 
 init(autoreset=True)
 
+
 def get_request(url):
+
     json_info = requests.get(url).json()
 
     while True:
@@ -31,16 +32,24 @@ with open("setting.json") as json_data:  # loads data from file.
 API_key = data.get("API_key")  # Get user API_key.
 watch = data.get("watch")  # Get list of items to be watched.
 
-items = get_request("https://api.torn.com/torn/?selections=items&key={}".format(API_key)).get("items")
+items = get_request(f"https://api.torn.com/torn/?selections=items&key={API_key}").get("items")
 
-# finds Id to item name and sets alert_bellow if user want's to use x% under market value.
+for watched in watch:
+    if watched.get("name") in sets.keys():
+        for set_item in sets[watched.get("name")]:
+            watch.append({"name": set_item, "alert_bellow": watched.get("alert_bellow"), "if_amount_bigger": watched.get("if_amount_bigger")})
+
+        watch.remove(watched)
+
+# finds ID to item name and sets alert_bellow if user want's to use x% under market value.
 for watched in watch:
     for item in items:
         if watched.get("name") == items.get(item).get("name"):
             watched["id"] = item
             if watched["alert_bellow"] <= 1: watched["alert_bellow"] *= items.get(item).get("market_value")
 
-
+for watched in watch:
+    print(watched)
 def scan_bazaar():
     cls()
     print("__________Update {}__________".format(datetime.datetime.now().time()))
