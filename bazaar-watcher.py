@@ -6,8 +6,9 @@ import json
 import os
 from colorama import init, Fore, Back, Style
 
-init(autoreset=True)
+from sets import sets
 
+init(autoreset=True)
 
 def get_request(url):
     json_info = requests.get(url).json()
