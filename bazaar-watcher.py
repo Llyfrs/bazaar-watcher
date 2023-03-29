@@ -1,28 +1,32 @@
-import requests
-import schedule
 import datetime
-import time
 import json
 import os
-from colorama import init, Fore, Back, Style
+import time
+
+import requests
+import schedule
+from colorama import init, Fore
+
 from sets import sets
 
 init(autoreset=True)
 
+"""
+    This function is used to get data from torn api. 
+    It will keep trying to get data until it gets it.
+"""
+
 
 def get_request(url):
-
-    json_info = requests.get(url).json()
-
     while True:
-        if json_info.get("error", True):
-            break
-        time.sleep(5)
         json_info = requests.get(url).json()
-    return json_info
+        if not json_info.get("error"):
+            return json_info
+        time.sleep(5)
 
 
-def cls():  # Clears console on linux and on windows
+# Clears console.
+def cls():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
@@ -37,7 +41,8 @@ items = get_request(f"https://api.torn.com/torn/?selections=items&key={API_key}"
 for watched in watch:
     if watched.get("name") in sets.keys():
         for set_item in sets[watched.get("name")]:
-            watch.append({"name": set_item, "alert_bellow": watched.get("alert_bellow"), "if_amount_bigger": watched.get("if_amount_bigger")})
+            watch.append({"name": set_item, "alert_bellow": watched.get("alert_bellow"),
+                          "if_amount_bigger": watched.get("if_amount_bigger")})
 
         watch.remove(watched)
 
@@ -50,33 +55,25 @@ for watched in watch:
 
 for watched in watch:
     print(watched)
+
+
+#
 def scan_bazaar():
     cls()
     print("__________Update {}__________".format(datetime.datetime.now().time()))
     for watched in watch:
-        data = get_request(
-            "https://api.torn.com/market/{}?selections=bazaar,itemmarket&key={}".format(watched["id"], API_key))
+        data = get_request("https://api.torn.com/market/{}?selections=bazaar,itemmarket&key={}".format(watched["id"], API_key))
         bazaar = data.get("bazaar")
         itemmarket = data.get("itemmarket")
-        for item in bazaar[
-                    0:3]:  # Going only thru first 3 bazaars since they are the only ones that you can see (and the ones with lowest cost)
-            if item.get("cost") <= watched.get("alert_bellow") and item.get("quantity") >= watched.get(
-                    "if_amount_bigger"):
-                print("There is " + Fore.RED + "{} ".format(item.get("quantity")) + Fore.BLUE + "{} ".format(
-                    watched.get("name")) + Fore.RESET + "on bazaar for " + Fore.GREEN + "${:,}".format(
-                    item.get("cost")))
-
+        for item in bazaar[0:3]:
+            if item.get("cost") <= watched.get("alert_bellow") and item.get("quantity") >= watched.get("if_amount_bigger"):
+                print(f"There is {Fore.RED}{item.get('quantity')} {Fore.BLUE}{watched.get('name')} {Fore.RESET}on bazaar for {Fore.GREEN}${item.get('cost'):,}")
         if itemmarket[0].get("cost") <= watched.get("alert_bellow") and watched.get("if_amount_bigger") == 0:
-            print("There is " + Fore.RED + "{} ".format(itemmarket[0].get("quantity")) + Fore.BLUE + "{} ".format(
-                watched.get("name")) + Fore.RESET + "on item market for " + Fore.GREEN + "${:,}".format(
-                itemmarket[0].get("cost")))
+            print(f"There is {Fore.RED}{itemmarket[0].get('quantity')} {Fore.BLUE}{watched.get('name')} {Fore.RESET}on item market for {Fore.GREEN}${itemmarket[0].get('cost'):,}")
 
-    pass
-
-
-schedule.every(31).seconds.do(scan_bazaar)
-schedule.run_all()
-
-while 1:
-    schedule.run_pending()
-    time.sleep(1)
+if __name__ == "__main__":
+    scan_bazaar()
+    schedule.every(31).seconds.do(scan_bazaar)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
