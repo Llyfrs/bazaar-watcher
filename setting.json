@@ -1,11 +1,11 @@
 {
-    "API_key":"s7CDJTrbSU55tend",
+    "API_key":"",
 
     "watch":
     [
         {
-            "name":"Plushies",
-            "alert_bellow":1,
+            "name":"Bottle of Beer",
+            "alert_bellow":3500,
             "if_amount_bigger":0
         }
 
